@@ -48,9 +48,10 @@ $ npm run start:prod
 # CRUD requests
 
 ## Get tasks request 
+``
 Method: GET
 $ http://localhost:3000/tasks
-
+``
 ## Get task by id request 
 Method: GET
 $ http://localhost:3000/tasks/id
