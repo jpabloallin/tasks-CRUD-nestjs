@@ -50,24 +50,33 @@ $ npm run start:prod
 ## Get tasks request 
 ``
 Method: GET
-$ http://localhost:3000/tasks
+
+http://localhost:3000/tasks
 ``
 ## Get task by id request 
+``
 Method: GET
-$ http://localhost:3000/tasks/id
 
+http://localhost:3000/tasks/id
+``
+``
 ## Create task request 
 Method: POST
-$ http://localhost:3000/tasks
 
+http://localhost:3000/tasks
+``
+``
 ## Update task by id request 
 Method: PUT
-$ http://localhost:3000/tasks/id
 
+http://localhost:3000/tasks/id
+``
+``
 ## DELETE task by id request 
 Method: DELETE
-$ http://localhost:3000/tasks/id
 
+http://localhost:3000/tasks/id
+``
 ## Test
 
 ```bash
