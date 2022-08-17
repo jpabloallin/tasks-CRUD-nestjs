@@ -1,7 +1,19 @@
-//Tipos de nueva nueva tarea
+//Tarea dto
+
+import { IsBoolean, IsNotEmpty, IsString, MaxLength } from "class-validator";
 
 export class CreateTaskDto {
+    @IsString()
+    @MaxLength(30)
+    @IsNotEmpty()
     name: string;
+
+    @IsString()
+    @MaxLength(200)
+    @IsNotEmpty()
     description: string;
-    done: boolean
+
+    @IsBoolean()
+    @IsNotEmpty()
+    done: boolean;
 }

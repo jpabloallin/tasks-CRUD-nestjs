@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Task } from './interfaces/Task';
 import { CreateTaskDto } from './dto/create-task-dto';
+import { UpdateTaskDto } from './dto/update-task-dto';
 
 @Injectable()
 export class TasksService {
@@ -12,12 +13,22 @@ export class TasksService {
 
     //Método para obtener tareas
     async getTasks() {
-        return await this.taskModel.find();
+        const taskData = await this.taskModel.find();
+
+        if(!taskData || taskData.length === 0) {
+            throw new NotFoundException('There are not tasks!');
+        }
+        return taskData;
     }
 
     //Método para obtener una tarea por id
     async getTask(id:string) {
-        return await this.taskModel.findById(id);
+        const existingTask = await this.taskModel.findById(id);
+
+        if (!existingTask) {
+            throw new NotFoundException(`Task #${id} not found`);
+        }
+        return existingTask;
     }
 
     //Método para crear una tarea
@@ -27,13 +38,24 @@ export class TasksService {
     }
 
     //Método para eliminar una tarea
-    deleteTask(id:string) {
-        return this.taskModel.findByIdAndDelete(id);
+    async deleteTask(id:string) {
+        const deletedTask = await this.taskModel.findByIdAndDelete(id);
+
+        if (!deletedTask) {
+            throw new NotFoundException(`Task #${id} not found`);
+        }
+        return deletedTask;
     }
 
     //Método para actualizar una tarea
-    async updateTask(id:string, task: CreateTaskDto) {
-        return await this.taskModel.findByIdAndUpdate(id, task);
+    async updateTask(id:string, task: UpdateTaskDto) {
+        const existingTask = await this.taskModel.findByIdAndUpdate(id, task, {
+            new: true });
+
+        if (!existingTask) {
+            throw new NotFoundException(`Task #${id} not found`);
+        }
+        return existingTask;
     }
 
 }

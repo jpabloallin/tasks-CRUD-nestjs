@@ -1,40 +1,89 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Res, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Res, Req, HttpStatus } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task-dto';
-import { request, response } from 'express';
 import { TasksService } from './tasks.service';
 import { Task } from './interfaces/Task';
+import { UpdateTaskDto } from './dto/update-task-dto';
+import { response } from 'express';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private taskService: TasksService) {}
 
   @Get()
-  getTasks(): Promise<Task[]> {
+  async getTasks(@Res() response): Promise<Task[]> {
 
-    return this.taskService.getTasks();
+    try {
+      const taskData = await this.taskService.getTasks();
+
+      return response.status(HttpStatus.OK).json({
+      message: 'All tasks data found successfully',taskData,});
+     } catch (err) {
+      
+      return response.status(err.status).json(err.response);
+     }
   }
 
   @Get(':taskId')
-  getTask(@Param('taskId') taskId: string)  {
+  async getTask(@Res() response, @Param('taskId') taskId: string)  {
     
-    return this.taskService.getTask( taskId );
+    try {
+      const existingTask = await this.taskService.getTask(taskId);
+
+      return response.status(HttpStatus.OK).json({
+      message: 'Task found successfully',existingTask,});
+   } catch (err) {
+
+     return response.status(err.status).json(err.response);
+   }
   }
 
   @Post()
-  createTask(@Body() task: CreateTaskDto): Promise<Task> {
-    return this.taskService.createTask(task);
+  async createTask(@Res() response, @Body() task: CreateTaskDto): Promise<Task> {
+
+    try {
+      const newTask = await this.taskService.createTask(task);  
+
+      return response.status(HttpStatus.CREATED).json({
+        message: 'Task has been successfully created',
+        newTask,});
+
+    } catch (error) {
+
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: 400,
+        message: 'Error: Task not created!',
+        error: 'Bad Request'
+      });
+    }
   }
 
   @Put(':id')
-  updateTask(@Body() task:CreateTaskDto, @Param('id') id:string): Promise<Task> {
+  async updateTask(@Res() response, @Body() task:UpdateTaskDto, @Param('id') id:string): Promise<Task> {
     
-    return this.taskService.updateTask(id, task);
+    try {
+      const existingTask = await this.taskService.updateTask(id, task);
+
+      return response.status(HttpStatus.OK).json({
+        message: 'Task has been successfully updated',
+        existingTask,});
+    } catch (error) {
+
+      return response.status(error.status).json(error.response);
+    }
   }
 
   @Delete(':id')
-  deleteTask(@Param('id') id: string) {
+  async deleteTask(@Res() response, @Param('id') id: string):Promise<Task> {
 
-    console.log(`Deleting task ${id}`);
-    return this.taskService.deleteTask( id );
+    try {
+      const deletedTask = await this.taskService.deleteTask(id);
+
+      return response.status(HttpStatus.OK).json({
+      message: 'Task deleted successfully',
+      deletedTask,});
+    } catch (err) {
+
+      return response.status(err.status).json(err.response);
+    }
   }
 }
