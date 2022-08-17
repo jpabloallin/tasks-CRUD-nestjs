@@ -60,20 +60,23 @@ Method: GET
 
 http://localhost:3000/tasks/id
 ```
-```bash
+
 ## Create task request 
+```bash
 Method: POST
 
 http://localhost:3000/tasks
 ```
-```bash
+
 ## Update task by id request 
+```bash
 Method: PUT
 
 http://localhost:3000/tasks/id
 ```
-```bash
+
 ## DELETE task by id request 
+```bash
 Method: DELETE
 
 http://localhost:3000/tasks/id
