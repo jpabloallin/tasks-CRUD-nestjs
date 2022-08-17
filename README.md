@@ -45,25 +45,25 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## CRUD requests
+# CRUD requests
 
-# Get tasks request 
+## Get tasks request 
 Method: GET
 $ http://localhost:3000/tasks
 
-# Get task by id request 
+## Get task by id request 
 Method: GET
 $ http://localhost:3000/tasks/id
 
-# Create task request 
+## Create task request 
 Method: POST
 $ http://localhost:3000/tasks
 
-# Update task by id request 
+## Update task by id request 
 Method: PUT
 $ http://localhost:3000/tasks/id
 
-# DELETE task by id request 
+## DELETE task by id request 
 Method: DELETE
 $ http://localhost:3000/tasks/id
 
